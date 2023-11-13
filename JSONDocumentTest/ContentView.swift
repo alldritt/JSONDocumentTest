@@ -41,5 +41,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(model: JSONDocumentTestModel())
+    NavigationStack {
+        ContentView(model: JSONDocumentTestModel())
+    }
 }
