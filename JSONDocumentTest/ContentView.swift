@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     //  When working with 
     @Environment(\.undoManager) var undoManager
-    @Binding var model: JSONDocumentTestModel
+    @State var model: JSONDocumentTestModel
     
     var body: some View {
         Form {
@@ -41,5 +41,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(model: .constant(JSONDocumentTestModel()))
+    ContentView(model: JSONDocumentTestModel())
 }

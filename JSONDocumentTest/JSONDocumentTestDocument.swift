@@ -15,7 +15,7 @@ extension UTType {
 }
 
 struct JSONDocumentTestDocument: FileDocument {
-    var model: JSONDocumentTestModel // document model object
+    let model: JSONDocumentTestModel // document model object
 
     init() {
         self.model = JSONDocumentTestModel() // default document contents
