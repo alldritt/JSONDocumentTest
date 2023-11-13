@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct JSONDocumentTestApp: App {
     var body: some Scene {
-        DocumentGroup(newDocument: JSONDocumentTestDocument()) { file in
+        DocumentGroup(newDocument: { JSONDocumentTestDocument() }) { file in
             ContentView(model: file.document.model)
                 .navigationTitle(FileManager.default.displayName(atPath: file.fileURL?.relativePath ?? ""))
         }

@@ -23,3 +23,18 @@ import SwiftUI
     }
 
 }
+
+
+extension JSONDocumentTestModel {
+    
+    convenience init(model: JSONDocumentTestModel) {
+        //  Create a "duplicate" of the model object to satisfy the needs of ReferenceFileDocument's snapshot(...)
+        //  function which returns a "copy" of the document's model object.
+        self.init()
+        
+        self.textValue = model.textValue
+        self.intValue = model.intValue
+        self.boolValue = model.boolValue
+    }
+    
+}

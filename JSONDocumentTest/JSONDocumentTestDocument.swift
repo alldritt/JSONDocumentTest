@@ -14,14 +14,16 @@ extension UTType {
     }
 }
 
-struct JSONDocumentTestDocument: FileDocument {
+final class JSONDocumentTestDocument: ReferenceFileDocument {
+    typealias Snapshot = JSONDocumentTestModel
+
     let model: JSONDocumentTestModel // document model object
+
+    static var readableContentTypes: [UTType] { [.exampleJSON] }
 
     init() {
         self.model = JSONDocumentTestModel() // default document contents
     }
-
-    static var readableContentTypes: [UTType] { [.exampleJSON] }
 
     init(configuration: ReadConfiguration) throws {
         guard let data = configuration.file.regularFileContents,
@@ -32,8 +34,20 @@ struct JSONDocumentTestDocument: FileDocument {
         self.model = model
     }
     
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = try JSONEncoder().encode(model)
+    func snapshot(contentType: UTType) throws -> Snapshot {
+        //  Looking at the headers for ReferenceFileDocument.snapshot(...), Apple shows code which duplicates
+        //  the model object, but defers serializing the object to the ReferenceFileDocument.fileWrapper(...)
+        //  call.
+        //
+        //  Note that this call blocks the UI and so should be as quick as possible.
+        return JSONDocumentTestModel(model: model) // make a copy of the model object
+    }
+    
+    func fileWrapper(snapshot: Snapshot, configuration: WriteConfiguration) throws -> FileWrapper {
+        //  The headers for ReferenceFileDocument.fileWrapper(...) indicate this call takes place on a
+        //  background thread and must not interact with the UI, or presumably the model.
+        let data = try JSONEncoder().encode(snapshot)
         return .init(regularFileWithContents: data)
     }
+
 }
