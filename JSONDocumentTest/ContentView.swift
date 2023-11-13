@@ -14,32 +14,29 @@ struct ContentView: View {
     @Binding var model: JSONDocumentTestModel
     
     var body: some View {
-        NavigationStack {
-            Form {
-                HStack {
-                    Text("Text")
-                    UndoProvider($model.textValue, actionName: "Change Text") { textValue in
-                        TextField("text", text: textValue)
-                            .multilineTextAlignment(.trailing)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                HStack {
-                    UndoProvider($model.intValue) { intValue in
-                        Stepper("Int Value", value: intValue)
-                        Text("\(intValue.wrappedValue)")
-                    }
-                }
-                HStack {
-                    UndoProvider($model.boolValue, actionName: "Change Bool Value") { boolValue in
-                        Toggle("Bool Value", isOn: boolValue)
-                    }
+        Form {
+            HStack {
+                Text("Text")
+                UndoProvider($model.textValue, actionName: "Change Text") { textValue in
+                    TextField("text", text: textValue)
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity)
                 }
             }
-            .navigationTitle("JSONDocumentTest")
-            .modifier(UndoRedoToolbarButtonsViewModifier())
-            .modifier(UndoRedoGesturesViewModifier())
+            HStack {
+                UndoProvider($model.intValue) { intValue in
+                    Stepper("Int Value", value: intValue)
+                    Text("\(intValue.wrappedValue)")
+                }
+            }
+            HStack {
+                UndoProvider($model.boolValue, actionName: "Change Bool Value") { boolValue in
+                    Toggle("Bool Value", isOn: boolValue)
+                }
+            }
         }
+        .modifier(UndoRedoToolbarButtonsViewModifier())
+        .modifier(UndoRedoGesturesViewModifier())
     }
 }
 
